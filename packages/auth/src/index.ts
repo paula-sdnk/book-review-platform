@@ -1,15 +1,14 @@
 import { db } from "@book-review-platform/db";
 import * as schema from "@book-review-platform/db/schema/auth";
 import { env } from "@book-review-platform/env/server";
-import { betterAuth } from "better-auth";
+import { betterAuth, type BetterAuthOptions } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 
-export const auth = betterAuth({
+const authOptions: BetterAuthOptions = {
   database: drizzleAdapter(db, {
     provider: "pg",
-
-    schema: schema,
+    schema,
   }),
   trustedOrigins: [env.CORS_ORIGIN],
   emailAndPassword: {
@@ -18,4 +17,8 @@ export const auth = betterAuth({
   secret: env.BETTER_AUTH_SECRET,
   baseURL: env.BETTER_AUTH_URL,
   plugins: [nextCookies()],
-});
+};
+
+type Auth = ReturnType<typeof betterAuth>;
+
+export const auth: Auth = betterAuth(authOptions);
