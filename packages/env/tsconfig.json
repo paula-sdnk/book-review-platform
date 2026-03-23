@@ -1,0 +1,3 @@
+{
+  "extends": "@book-review-platform/config/tsconfig.base.json"
+}

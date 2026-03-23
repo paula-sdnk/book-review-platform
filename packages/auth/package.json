@@ -1,0 +1,24 @@
+{
+  "name": "@book-review-platform/auth",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@book-review-platform/db": "workspace:*",
+    "@book-review-platform/env": "workspace:*",
+    "better-auth": "catalog:",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@book-review-platform/config": "workspace:*",
+    "typescript": "^5"
+  }
+}
