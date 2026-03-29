@@ -1,6 +1,5 @@
 import { searchBooks } from "@book-review-platform/db";
-import Link from "next/link";
-import type { Route } from "next";
+import { BookListItem } from "@/components/book-list-item";
 
 type BooksPageProps = {
   searchParams?: Promise<{
@@ -43,19 +42,17 @@ export default async function BooksPage({ searchParams }: BooksPageProps) {
           No books found for "{query}".
         </p>
       ) : (
-        <ul className="mt-6 space-y-3">
-          {books.map((currentBook) => {
-            const bookHref = `/books/${currentBook.id}` as Route;
-
-            return (
-              <li key={currentBook.id}>
-                <Link href={bookHref} className="hover:underline">
-                  {currentBook.title} — {currentBook.author}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        <div className="mt-6 flex flex-col items-center gap-4">
+          {books.map((currentBook) => (
+            <BookListItem
+              key={currentBook.id}
+              id={currentBook.id}
+              title={currentBook.title}
+              author={currentBook.author}
+              coverUrl={currentBook.coverUrl}
+            />
+          ))}
+        </div>
       )}
     </main>
   );
