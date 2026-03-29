@@ -69,6 +69,9 @@ importers:
       '@book-review-platform/auth':
         specifier: workspace:*
         version: link:../../packages/auth
+      '@book-review-platform/db':
+        specifier: workspace:*
+        version: link:../../packages/db
       '@book-review-platform/env':
         specifier: workspace:*
         version: link:../../packages/env

@@ -11,6 +11,7 @@
     "@book-review-platform/auth": "workspace:*",
     "@book-review-platform/env": "workspace:*",
     "@book-review-platform/ui": "workspace:*",
+    "@book-review-platform/db": "workspace:*",
     "@tanstack/react-form": "^1.28.0",
     "babel-plugin-react-compiler": "^1.0.0",
     "better-auth": "catalog:",
