@@ -17,7 +17,8 @@
     "db:start": "docker compose up -d",
     "db:watch": "docker compose up",
     "db:stop": "docker compose stop",
-    "db:down": "docker compose down"
+    "db:down": "docker compose down",
+    "import:books": "tsx ./scripts/import-books.ts"
   },
   "dependencies": {
     "@book-review-platform/env": "workspace:*",
@@ -30,6 +31,7 @@
     "@book-review-platform/config": "workspace:*",
     "@types/pg": "^8.16.0",
     "drizzle-kit": "^0.31.8",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }
