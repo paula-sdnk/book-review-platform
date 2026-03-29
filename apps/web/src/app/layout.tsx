@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "book-review-platform",
-  description: "book-review-platform",
+  title: "BookLeaf - Book Review Platform",
+  description: "Book Review Platform",
 };
 
 export default function RootLayout({

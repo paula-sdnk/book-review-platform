@@ -55,6 +55,10 @@ export default function UserMenu() {
 
           <DropdownMenuSeparator />
 
+          <Link href="/dashboard">
+            <DropdownMenuItem>My dashboard</DropdownMenuItem>
+          </Link>
+
           <DropdownMenuItem
             variant="destructive"
             onClick={() => {
