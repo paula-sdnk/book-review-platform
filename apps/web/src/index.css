@@ -1,1 +1,7 @@
 @import "@book-review-platform/ui/globals.css";
+
+html,
+body {
+  background-color: #f6efe3;
+  color: #4b3527;
+}

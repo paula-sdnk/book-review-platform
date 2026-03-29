@@ -6,7 +6,7 @@ import SignInForm from "@/components/sign-in-form";
 import SignUpForm from "@/components/sign-up-form";
 
 export default function LoginPage() {
-  const [showSignIn, setShowSignIn] = useState(false);
+  const [showSignIn, setShowSignIn] = useState(true);
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#f6efe3] px-4">

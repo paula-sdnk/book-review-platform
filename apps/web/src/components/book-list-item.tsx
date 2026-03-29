@@ -19,9 +19,9 @@ export function BookListItem({
   return (
     <Link
       href={bookHref}
-      className="flex w-[700px] gap-4 rounded-lg border p-4 transition hover:bg-muted/50"
+      className="flex w-full gap-4 rounded-xl border border-[#e7d8bf] bg-[#fffaf2] p-4 shadow-sm transition hover:bg-[#fcf4e8]"
     >
-      <div className="h-24 w-16 shrink-0 overflow-hidden rounded-md border bg-muted">
+      <div className="h-24 w-16 shrink-0 overflow-hidden rounded-md border border-[#e7d8bf] bg-[#fffdf8]">
         {coverUrl ? (
           <img
             src={coverUrl}
@@ -29,15 +29,17 @@ export function BookListItem({
             className="h-full w-full object-cover"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
+          <div className="flex h-full w-full items-center justify-center text-xs text-[#a48b78]">
             No cover
           </div>
         )}
       </div>
 
       <div className="min-w-0">
-        <h2 className="truncate text-lg font-semibold">{title}</h2>
-        <p className="mt-1 text-sm text-muted-foreground">{author}</p>
+        <h2 className="truncate text-lg font-semibold text-[#4b3527]">
+          {title}
+        </h2>
+        <p className="mt-1 text-sm text-[#6b5646]">{author}</p>
       </div>
     </Link>
   );
