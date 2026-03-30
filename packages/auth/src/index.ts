@@ -7,16 +7,17 @@ import { nextCookies } from "better-auth/next-js";
 
 const authOptions: BetterAuthOptions = {
   database: drizzleAdapter(db, {
-    provider: "pg",
+    // Drizzle database client
+    provider: "pg", // PostgreSQL
     schema,
   }),
-  trustedOrigins: [env.CORS_ORIGIN],
+  trustedOrigins: [env.CORS_ORIGIN], // only trust auth requests from this frontend origin
   emailAndPassword: {
     enabled: true,
   },
-  secret: env.BETTER_AUTH_SECRET,
-  baseURL: env.BETTER_AUTH_URL,
-  plugins: [nextCookies()],
+  secret: env.BETTER_AUTH_SECRET, // proves that session data came from my app
+  baseURL: env.BETTER_AUTH_URL, // this is the main URL for auth endpoints and callbacks
+  plugins: [nextCookies()], // use Next.js cookies to store and read sessions
 };
 
 type Auth = ReturnType<typeof betterAuth>;

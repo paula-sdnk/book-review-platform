@@ -15,7 +15,7 @@ export default async function BookDetailsPage({
   const book = await getBookById(bookId);
 
   if (!book) {
-    notFound();
+    notFound(); // show a 404 page to the user
   }
 
   return (
