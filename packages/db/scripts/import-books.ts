@@ -1,12 +1,7 @@
-// import dotenv from "dotenv";
 import { readFile } from "node:fs/promises";
 import crypto from "node:crypto";
 import { db } from "../src";
 import { book } from "../src/schema/book";
-
-// dotenv.config({
-//   path: "../../../apps/web/.env",
-// });
 
 // The shape of the response from Google Books API
 type GoogleBooksResponse = {

@@ -27,9 +27,9 @@ export default function SignUpForm({
     onSubmit: async ({ value }) => {
       await authClient.signUp.email(
         {
-          email: value.email,
+          email: value.email.trim().toLowerCase(),
           password: value.password,
-          name: value.name,
+          name: value.name.trim(),
         },
         {
           onSuccess: () => {
@@ -44,9 +44,21 @@ export default function SignUpForm({
     },
     validators: {
       onSubmit: z.object({
-        name: z.string().min(2, "Name must be at least 2 characters"),
-        email: z.email("Invalid email address"),
-        password: z.string().min(8, "Password must be at least 8 characters"),
+        name: z
+          .string()
+          .trim()
+          .min(2, "Name must be at least 2 characters")
+          .max(50, "Name must be at most 50 characters"),
+        email: z
+          .email("Invalid email address")
+          .trim()
+          .toLowerCase()
+          .min(1, "Email is required")
+          .max(254, "Email must be at most 254 characters"),
+        password: z
+          .string()
+          .min(8, "Password must be at least 8 characters")
+          .max(128, "Password must be at most 128 characters"),
       }),
     },
   });

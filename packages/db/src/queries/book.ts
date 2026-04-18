@@ -2,13 +2,6 @@ import { asc, count, eq, ilike, or } from "drizzle-orm";
 import { db } from "../index";
 import { book } from "../schema/book";
 
-export async function getBooks(limit = 20) {
-  return db.query.book.findMany({
-    orderBy: [asc(book.title)],
-    limit,
-  });
-}
-
 export async function getBookById(bookId: string) {
   return db.query.book.findFirst({
     where: eq(book.id, bookId),
@@ -31,7 +24,7 @@ export async function searchBooks(query: string, page = 1, limit = 20) {
   const offset = (currentPage - 1) * limit;
 
   const searchFilter = or(
-    ilike(book.title, `%${trimmedQuery}%`), // case-insensitive search in PostgreSQL
+    ilike(book.title, `%${trimmedQuery}%`),
     ilike(book.author, `%${trimmedQuery}%`)
   );
 

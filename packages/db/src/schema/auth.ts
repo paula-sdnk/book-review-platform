@@ -6,6 +6,7 @@ import {
   boolean,
   index,
   pgEnum,
+  varchar,
 } from "drizzle-orm/pg-core";
 import { review } from "./review";
 import { readingListEntry } from "./reading-list-entry";
@@ -14,14 +15,14 @@ export const userRoleEnum = pgEnum("user_role", ["USER", "ADMIN"]);
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull().unique(),
+  name: varchar("name", { length: 50 }).notNull(),
+  email: varchar("email", { length: 254 }).notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
   role: userRoleEnum("role").default("USER").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
-    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .$onUpdate(() => new Date())
     .notNull(),
 });
 
@@ -33,7 +34,7 @@ export const session = pgTable(
     token: text("token").notNull().unique(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")
-      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .$onUpdate(() => new Date())
       .notNull(),
     ipAddress: text("ip_address"),
     userAgent: text("user_agent"),
@@ -62,7 +63,7 @@ export const account = pgTable(
     password: text("password"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")
-      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .$onUpdate(() => new Date())
       .notNull(),
   },
   (table) => [index("account_userId_idx").on(table.userId)]
@@ -78,7 +79,7 @@ export const verification = pgTable(
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")
       .defaultNow()
-      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .$onUpdate(() => new Date())
       .notNull(),
   },
   (table) => [index("verification_identifier_idx").on(table.identifier)]
