@@ -1,6 +1,7 @@
-import { getBookById } from "@book-review-platform/db";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BookDescription } from "@/components/book-description";
+import { api } from "@/lib/trpc-server";
 
 type BookDetailsPageProps = {
   params: Promise<{
@@ -12,15 +13,23 @@ export default async function BookDetailsPage({
   params,
 }: BookDetailsPageProps) {
   const { bookId } = await params;
-  const book = await getBookById(bookId);
+  const caller = await api();
+  const book = await caller.book.getById({ bookId });
 
   if (!book) {
     notFound();
   }
 
   return (
-    <main className="min-h-screen bg-[#f6efe3] px-6 py-14">
+    <main className="min-h-screen bg-[#f6efe3] px-6 pt-8 pb-14">
       <div className="mx-auto max-w-5xl">
+        <Link
+          href="/books"
+          className="mb-3 inline-block text-sm text-[#6b5646] transition hover:text-[#4b3527]"
+        >
+          ← Back to books
+        </Link>
+
         <div className="rounded-3xl border border-[#e7d8bf] bg-[#fffaf2] p-8 shadow-sm">
           <div className="flex gap-10">
             <div className="h-[420px] w-[280px] shrink-0 overflow-hidden rounded-xl border border-[#e7d8bf] bg-[#fffdf8]">
@@ -75,6 +84,7 @@ export default async function BookDetailsPage({
 
         <section className="mt-8 rounded-3xl border border-[#e7d8bf] bg-[#fffaf2] p-8 shadow-sm">
           <h2 className="text-2xl font-semibold text-[#4b3527]">Description</h2>
+
           <div className="mt-4 text-[#6b5646]">
             <BookDescription description={book.description} />
           </div>

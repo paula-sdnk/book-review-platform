@@ -1,7 +1,6 @@
 import { env } from "@book-review-platform/env/server";
 import { type NodePgDatabase, drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-export * from "./queries/book";
 
 import * as schema from "./schema";
 
@@ -12,3 +11,5 @@ export const pool = new Pool({
 export const db: NodePgDatabase<typeof schema> = drizzle(pool, {
   schema,
 });
+
+export * from "./schema";

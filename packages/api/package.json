@@ -1,0 +1,30 @@
+{
+  "name": "@book-review-platform/api",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@book-review-platform/auth": "workspace:*",
+    "@book-review-platform/db": "workspace:*",
+    "@book-review-platform/env": "workspace:*",
+    "@trpc/client": "catalog:",
+    "@trpc/server": "catalog:",
+    "drizzle-orm": "catalog:",
+    "dotenv": "catalog:",
+    "next": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@book-review-platform/config": "workspace:*",
+    "typescript": "^5"
+  }
+}
