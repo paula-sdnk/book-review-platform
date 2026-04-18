@@ -37,6 +37,26 @@ type MappedBook = {
   yearPublished: number | null;
 };
 
+function isBookValid(book: MappedBook): boolean {
+  if (book.title.length > 180) {
+    return false;
+  }
+
+  if (book.author.length > 150) {
+    return false;
+  }
+
+  if (book.description.length < 30) {
+    return false;
+  }
+
+  if (book.description.length > 5000) {
+    return false;
+  }
+
+  return true;
+}
+
 // Read all author names from the txt file
 async function getAuthorsFromFile(filePath: string): Promise<string[]> {
   const fileContent = await readFile(filePath, "utf-8");
@@ -232,15 +252,16 @@ async function main(): Promise<void> {
       );
 
       // Clean the books and skip incomplete ones
-      const mappedBooks = booksWithExactAuthorMatch
+      const validMappedBooks = booksWithExactAuthorMatch
         .map(mapGoogleBook)
-        .filter((mappedBook): mappedBook is MappedBook => mappedBook !== null);
+        .filter((mappedBook): mappedBook is MappedBook => mappedBook !== null)
+        .filter(isBookValid);
 
       console.log(
-        `${author}: fetched=${googleBooks.length}, matched=${booksWithExactAuthorMatch.length}, mapped=${mappedBooks.length}`
+        `${author}: fetched=${googleBooks.length}, matched=${booksWithExactAuthorMatch.length}, valid=${validMappedBooks.length}`
       );
 
-      allMappedBooks.push(...mappedBooks);
+      allMappedBooks.push(...validMappedBooks);
     } catch (error) {
       // If one author fails, log it and continue with the next one
       console.error(`Failed to fetch books for author: ${author}`);
