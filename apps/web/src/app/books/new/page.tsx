@@ -18,6 +18,7 @@ export default function CreateBookPage() {
       title: "",
       author: "",
       description: "",
+
       coverUrl: "",
       genre: "",
       pageCount: "",

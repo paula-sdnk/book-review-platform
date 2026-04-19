@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
+import { auth } from "@book-review-platform/auth";
 import { BookDescription } from "@/components/book-description";
+import { ReviewForm } from "@/components/review-form";
+import { ReviewList } from "@/components/review-list";
 import { api } from "@/lib/trpc-server";
 
 type BookDetailsPageProps = {
@@ -13,12 +17,21 @@ export default async function BookDetailsPage({
   params,
 }: BookDetailsPageProps) {
   const { bookId } = await params;
-  const caller = await api();
+
+  const [caller, session] = await Promise.all([
+    api(),
+    auth.api.getSession({ headers: await headers() }),
+  ]);
+
   const book = await caller.book.getById({ bookId });
 
-  if (!book) {
-    notFound();
-  }
+  if (!book) notFound();
+
+  const { reviews } = await caller.review.getByBookId({ bookId });
+
+  const userAlreadyReviewed = session?.user
+    ? reviews.some((r) => r.user.id === session.user.id)
+    : false;
 
   return (
     <main className="min-h-screen bg-[#f6efe3] px-6 pt-8 pb-14">
@@ -87,6 +100,39 @@ export default async function BookDetailsPage({
 
           <div className="mt-4 text-[#6b5646]">
             <BookDescription description={book.description} />
+          </div>
+        </section>
+
+        <section className="mt-8 rounded-3xl border border-[#e7d8bf] bg-[#fffaf2] p-8 shadow-sm">
+          <h2 className="text-2xl font-semibold text-[#4b3527]">Reviews</h2>
+
+          <div className="mt-6">
+            <ReviewList reviews={reviews} />
+          </div>
+
+          <div className="mt-8">
+            {!session?.user ? (
+              <p className="text-sm text-[#a48b78]">
+                <Link
+                  href="/login"
+                  className="underline transition hover:text-[#4b3527]"
+                >
+                  Sign in
+                </Link>{" "}
+                to leave a review.
+              </p>
+            ) : userAlreadyReviewed ? (
+              <p className="text-sm text-[#a48b78]">
+                You already reviewed this book.
+              </p>
+            ) : (
+              <>
+                <h3 className="mb-4 text-lg font-semibold text-[#4b3527]">
+                  Write a review
+                </h3>
+                <ReviewForm bookId={bookId} />
+              </>
+            )}
           </div>
         </section>
       </div>
