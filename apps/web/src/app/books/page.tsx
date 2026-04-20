@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { headers } from "next/headers";
+import { auth } from "@book-review-platform/auth";
 import { BookListItem } from "@/components/book-list-item";
 import { api } from "@/lib/trpc-server";
 
@@ -27,7 +29,11 @@ export default async function BooksPage({ searchParams }: BooksPageProps) {
   const currentPage =
     Number.isNaN(parsedPage) || parsedPage < 1 ? 1 : parsedPage;
 
-  const t = await api();
+  const [t, session] = await Promise.all([
+    api(),
+    auth.api.getSession({ headers: await headers() }),
+  ]);
+
   const searchResult = query
     ? await t.book.search({ query, page: currentPage, limit: 20 })
     : {
@@ -46,14 +52,16 @@ export default async function BooksPage({ searchParams }: BooksPageProps) {
 
         <p className="mt-2 text-[#6b5646]">Search by title or author.</p>
 
-        <div className="mt-5">
-          <Link
-            href="/books/new"
-            className="inline-flex items-center rounded-full border border-[#dcc9ac] bg-white px-4 py-2 text-sm font-medium text-[#4b3527] transition hover:bg-[#f3e7d3]"
-          >
-            Add new book
-          </Link>
-        </div>
+        {session?.user && (
+          <div className="mt-5">
+            <Link
+              href="/books/new"
+              className="inline-flex items-center rounded-2xl border border-[#dcc9ac] bg-white px-4 py-2 text-sm font-medium text-[#4b3527] transition hover:bg-[#f3e7d3]"
+            >
+              Add new book
+            </Link>
+          </div>
+        )}
 
         <form action="/books" method="GET" className="mt-6 flex gap-3">
           <input
@@ -66,7 +74,7 @@ export default async function BooksPage({ searchParams }: BooksPageProps) {
 
           <button
             type="submit"
-            className="h-10 cursor-pointer rounded-lg bg-[#c49a63] px-6 font-medium text-white transition hover:bg-[#b48953]"
+            className="h-10 cursor-pointer rounded-2xl bg-[#c49a63] px-6 font-medium text-white transition hover:bg-[#b48953]"
           >
             Search
           </button>
@@ -92,6 +100,8 @@ export default async function BooksPage({ searchParams }: BooksPageProps) {
                   title={currentBook.title}
                   author={currentBook.author}
                   coverUrl={currentBook.coverUrl}
+                  averageRating={currentBook.averageRating}
+                  reviewCount={currentBook.reviewCount}
                 />
               ))}
             </div>

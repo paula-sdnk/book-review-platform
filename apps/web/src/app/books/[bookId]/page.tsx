@@ -6,6 +6,7 @@ import { BookDescription } from "@/components/book-description";
 import { ReviewForm } from "@/components/review-form";
 import { ReviewList } from "@/components/review-list";
 import { api } from "@/lib/trpc-server";
+import { RatingBadge } from "@/components/rating-badge";
 
 type BookDetailsPageProps = {
   params: Promise<{
@@ -70,6 +71,14 @@ export default async function BookDetailsPage({
 
               <p className="mt-3 text-xl text-[#6b5646]">{book.author}</p>
 
+              <div className="mt-3">
+                <RatingBadge
+                  averageRating={book.averageRating}
+                  reviewCount={book.reviewCount}
+                  size="lg"
+                />
+              </div>
+
               <div className="mt-8 space-y-3 text-sm text-[#4b3527]">
                 {book.genre ? (
                   <p>
@@ -107,7 +116,10 @@ export default async function BookDetailsPage({
           <h2 className="text-2xl font-semibold text-[#4b3527]">Reviews</h2>
 
           <div className="mt-6">
-            <ReviewList reviews={reviews} />
+            <ReviewList
+              reviews={reviews}
+              currentUserId={session?.user.id ?? null}
+            />
           </div>
 
           <div className="mt-8">
@@ -130,7 +142,7 @@ export default async function BookDetailsPage({
                 <h3 className="mb-4 text-lg font-semibold text-[#4b3527]">
                   Write a review
                 </h3>
-                <ReviewForm bookId={bookId} />
+                <ReviewForm mode="create" bookId={bookId} />
               </>
             )}
           </div>

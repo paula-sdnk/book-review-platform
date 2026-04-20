@@ -1,11 +1,14 @@
 import type { Route } from "next";
 import Link from "next/link";
+import { RatingBadge } from "./rating-badge";
 
 type BookListItemProps = {
   id: string;
   title: string;
   author: string;
   coverUrl: string | null;
+  averageRating?: number | null;
+  reviewCount?: number;
 };
 
 export function BookListItem({
@@ -13,6 +16,8 @@ export function BookListItem({
   title,
   author,
   coverUrl,
+  averageRating,
+  reviewCount = 0,
 }: BookListItemProps) {
   const bookHref = `/books/${id}` as Route;
 
@@ -40,6 +45,14 @@ export function BookListItem({
           {title}
         </h2>
         <p className="mt-1 text-sm text-[#6b5646]">{author}</p>
+        {averageRating !== undefined && (
+          <div className="mt-1">
+            <RatingBadge
+              averageRating={averageRating}
+              reviewCount={reviewCount}
+            />
+          </div>
+        )}
       </div>
     </Link>
   );
