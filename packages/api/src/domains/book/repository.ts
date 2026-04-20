@@ -1,5 +1,3 @@
-// book/repository.ts
-
 import { asc, count, eq, ilike, or, sql } from "drizzle-orm";
 import { db, book, review } from "@book-review-platform/db";
 
@@ -15,7 +13,7 @@ const bookWithRatingFields = {
   googleBooksId: book.googleBooksId,
   averageRating: sql<
     number | null
-  >`round(cast(avg(${review.rating}) as numeric), 1)`,
+  >`round(cast(avg(${review.rating}) as numeric), 1)`, // apskaiciuoja vidutini knygos vertinima su vienu sk po kablelio
   reviewCount: count(review.id),
 };
 

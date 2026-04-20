@@ -20,7 +20,3 @@ export async function tryCatch<T, E = Error>(
     return { error: error as E };
   }
 }
-
-export function shouldNeverHappen(message: string): never {
-  throw new Error(message);
-}

@@ -75,7 +75,7 @@ export function ReviewForm(props: ReviewFormProps) {
 
     router.refresh();
     if (props.mode === "edit") {
-      props.onCancel();
+      props.onCancel(); // paslepia forma, parodo paprasta apzvalgos vaizda
     }
   }
 

@@ -48,10 +48,7 @@ export default function SignInForm({
           .toLowerCase()
           .min(1, "Email is required")
           .max(254, "Email must be at most 254 characters"),
-        password: z
-          .string()
-          .min(8, "Password must be at least 8 characters")
-          .max(128, "Password must be at most 128 characters"),
+        password: z.string().min(8, "Password must be at least 8 characters"),
       }),
     },
   });
