@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import crypto from "node:crypto";
-import { db } from "../src";
+import { db, mapGoogleGenre, type GenreValue } from "../src";
 import { book } from "../src/schema/book";
 
 // The shape of the response from Google Books API
@@ -33,7 +33,7 @@ type MappedBook = {
   description: string;
   coverUrl: string | null;
   pageCount: number | null;
-  genre: string | null;
+  genre: GenreValue | null;
   yearPublished: number | null;
 };
 
@@ -138,7 +138,7 @@ function mapGoogleBook(googleBook: GoogleBook): MappedBook | null {
       volumeInfo.imageLinks?.thumbnail ?? volumeInfo.imageLinks?.smallThumbnail
     ),
     pageCount: volumeInfo.pageCount ?? null,
-    genre: volumeInfo.categories?.join(", ") ?? null,
+    genre: mapGoogleGenre(volumeInfo.categories),
     yearPublished: extractYear(volumeInfo.publishedDate),
   };
 }
@@ -268,7 +268,7 @@ async function main(): Promise<void> {
       console.error(error);
     }
 
-    await sleep(1000);
+    await sleep(2000);
   }
 
   // Remove duplicates before inserting into the database

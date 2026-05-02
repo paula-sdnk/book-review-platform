@@ -13,3 +13,4 @@ export const db: NodePgDatabase<typeof schema> = drizzle(pool, {
 });
 
 export * from "./schema";
+export * from "./genre-mapping";

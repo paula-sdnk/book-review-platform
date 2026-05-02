@@ -1,0 +1,3 @@
+CREATE TYPE "public"."book_genre" AS ENUM('FICTION', 'FANTASY', 'SCIENCE_FICTION', 'MYSTERY_THRILLER', 'ROMANCE', 'HORROR', 'HISTORICAL_FICTION', 'LITERARY_FICTION', 'YOUNG_ADULT', 'CHILDREN', 'BIOGRAPHY', 'SELF_HELP', 'SCIENCE', 'HISTORY', 'PHILOSOPHY', 'POETRY', 'COMICS_GRAPHIC_NOVELS', 'TRUE_CRIME', 'BUSINESS', 'OTHER');--> statement-breakpoint
+ALTER TABLE "book" ALTER COLUMN "genre" SET DATA TYPE "public"."book_genre" USING "genre"::"public"."book_genre";--> statement-breakpoint
+CREATE INDEX "book_genre_idx" ON "book" USING btree ("genre");

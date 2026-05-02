@@ -7,6 +7,7 @@ import { ReviewForm } from "@/components/review-form";
 import { ReviewList } from "@/components/review-list";
 import { api } from "@/lib/trpc-server";
 import { RatingBadge } from "@/components/rating-badge";
+import { getGenreLabel } from "@/lib/genres";
 
 type BookDetailsPageProps = {
   params: Promise<{
@@ -82,7 +83,8 @@ export default async function BookDetailsPage({
               <div className="mt-8 space-y-3 text-sm text-[#4b3527]">
                 {book.genre ? (
                   <p>
-                    <span className="font-semibold">Genre:</span> {book.genre}
+                    <span className="font-semibold">Genre:</span>{" "}
+                    {getGenreLabel(book.genre)}
                   </p>
                 ) : null}
 

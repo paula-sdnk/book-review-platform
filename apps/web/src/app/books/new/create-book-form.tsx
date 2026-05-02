@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { createBookSchema } from "@book-review-platform/api/domains/book/validation";
 import { trpc } from "@/lib/trpc";
 import { tryCatch } from "@/lib/utils";
+import { GENRE_OPTIONS } from "@/lib/genres";
 
 export function CreateBookForm() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export function CreateBookForm() {
       author: "",
       description: "",
       coverUrl: "",
-      genre: "",
+      genre: "" as string,
       pageCount: "",
       yearPublished: "",
     },
@@ -218,13 +219,19 @@ export function CreateBookForm() {
                   Genre
                 </label>
 
-                <input
+                <select
                   id="genre"
-                  type="text"
                   value={field.state.value}
                   onChange={(e) => field.handleChange(e.target.value)}
                   className="w-full rounded-2xl border border-[#e2d3bd] bg-white px-4 py-3 text-[#4a3428] outline-none transition focus:border-[#b88b52]"
-                />
+                >
+                  <option value="">No genre</option>
+                  {GENRE_OPTIONS.map((genre) => (
+                    <option key={genre.value} value={genre.value}>
+                      {genre.label}
+                    </option>
+                  ))}
+                </select>
               </div>
             )}
           </form.Field>
