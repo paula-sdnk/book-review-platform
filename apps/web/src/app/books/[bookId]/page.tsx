@@ -38,13 +38,6 @@ export default async function BookDetailsPage({
   return (
     <main className="min-h-screen bg-[#f6efe3] px-6 pt-8 pb-14">
       <div className="mx-auto max-w-5xl">
-        <Link
-          href="/books"
-          className="mb-3 inline-block text-sm text-[#6b5646] transition hover:text-[#4b3527]"
-        >
-          ← Back to books
-        </Link>
-
         <div className="rounded-3xl border border-[#e7d8bf] bg-[#fffaf2] p-8 shadow-sm">
           <div className="flex gap-10">
             <div className="h-[420px] w-[280px] shrink-0 overflow-hidden rounded-xl border border-[#e7d8bf] bg-[#fffdf8]">

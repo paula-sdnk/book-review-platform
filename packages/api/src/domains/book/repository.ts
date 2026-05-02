@@ -1,5 +1,5 @@
-import { asc, count, eq, ilike, or, sql } from "drizzle-orm";
-import { db, book, review } from "@book-review-platform/db";
+import { asc, count, eq, ilike, or, sql, desc } from "drizzle-orm";
+import { db, book, review, type GenreValue } from "@book-review-platform/db";
 
 const bookWithRatingFields = {
   id: book.id,
@@ -87,10 +87,32 @@ export async function insertBook(data: {
   author: string;
   description: string;
   coverUrl?: string | null;
-  genre?: string | null;
+  genre?: GenreValue | null;
   pageCount?: number | null;
   yearPublished?: number | null;
   googleBooksId?: string | null;
 }) {
   await db.insert(book).values(data);
+}
+
+export async function getTopRatedBooks(limit = 10) {
+  return db
+    .select(bookWithRatingFields)
+    .from(book)
+    .leftJoin(review, eq(book.id, review.bookId))
+    .groupBy(book.id)
+    .having(sql`count(${review.id}) >= 2 and avg(${review.rating}) is not null`)
+    .orderBy(desc(sql`round(cast(avg(${review.rating}) as numeric), 1)`))
+    .limit(limit);
+}
+
+export async function getMostReviewedBooks(limit = 10) {
+  return db
+    .select(bookWithRatingFields)
+    .from(book)
+    .leftJoin(review, eq(book.id, review.bookId))
+    .groupBy(book.id)
+    .having(sql`count(${review.id}) >= 1`)
+    .orderBy(desc(count(review.id)))
+    .limit(limit);
 }

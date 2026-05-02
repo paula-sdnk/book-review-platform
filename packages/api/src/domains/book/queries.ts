@@ -20,7 +20,17 @@ export const search = publicProcedure
     return repo.searchBooks(input.query, input.page, input.limit);
   });
 
+export const getTopRated = publicProcedure.query(async () => {
+  return repo.getTopRatedBooks();
+});
+
+export const getMostReviewed = publicProcedure.query(async () => {
+  return repo.getMostReviewedBooks();
+});
+
 export const bookQueries = {
   getById,
   search,
+  getTopRated,
+  getMostReviewed,
 };

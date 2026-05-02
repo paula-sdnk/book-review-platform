@@ -1,10 +1,19 @@
 import Link from "next/link";
+import { api } from "@/lib/trpc-server";
+import { BookRow } from "@/components/book-row";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const caller = await api();
+
+  const [topRated, mostReviewed] = await Promise.all([
+    caller.book.getTopRated(),
+    caller.book.getMostReviewed(),
+  ]);
+
   return (
-    <main className="min-h-[calc(100vh-80px)]">
-      <div className="mx-auto flex max-w-6xl items-center justify-center px-6 py-20">
-        <section className="flex max-w-3xl flex-col items-center text-center">
+    <main className="min-h-[calc(100vh-80px)] bg-[#f6efe3]">
+      <div className="mx-auto max-w-6xl px-6 py-20">
+        <section className="flex max-w-3xl flex-col items-center text-center mx-auto">
           <p className="text-sm font-medium uppercase tracking-[0.3em] text-[#c89b5a]">
             Book review platform
           </p>
@@ -27,6 +36,11 @@ export default function HomePage() {
             </Link>
           </div>
         </section>
+
+        <div className="mt-30 space-y-12">
+          <BookRow title="Top rated" books={topRated} />
+          <BookRow title="Most reviewed" books={mostReviewed} />
+        </div>
       </div>
     </main>
   );
