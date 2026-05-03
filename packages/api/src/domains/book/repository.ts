@@ -81,6 +81,34 @@ export async function getBookByTitleAndAuthor(title: string, author: string) {
   });
 }
 
+export async function getBooksByGenre(genre: GenreValue, page = 1, limit = 20) {
+  const offset = (page - 1) * limit;
+
+  const genreFilter = eq(book.genre, genre);
+
+  const [books, totalResult] = await Promise.all([
+    db
+      .select(bookWithRatingFields)
+      .from(book)
+      .leftJoin(review, eq(book.id, review.bookId))
+      .where(genreFilter)
+      .groupBy(book.id)
+      .orderBy(asc(book.title))
+      .limit(limit)
+      .offset(offset),
+    db.select({ total: count() }).from(book).where(genreFilter),
+  ]);
+
+  const total = totalResult[0]?.total ?? 0;
+
+  return {
+    books,
+    total,
+    totalPages: Math.ceil(total / limit),
+    currentPage: page,
+  };
+}
+
 export async function insertBook(data: {
   id: string;
   title: string;

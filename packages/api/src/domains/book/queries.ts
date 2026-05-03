@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { publicProcedure } from "../../core/trpc";
 import * as repo from "./repository";
+import type { GenreValue } from "@book-review-platform/db";
 
 export const getById = publicProcedure
   .input(z.object({ bookId: z.string() }))
@@ -28,9 +29,26 @@ export const getMostReviewed = publicProcedure.query(async () => {
   return repo.getMostReviewedBooks();
 });
 
+export const getByGenre = publicProcedure
+  .input(
+    z.object({
+      genre: z.string(),
+      page: z.number().min(1).optional().default(1),
+      limit: z.number().min(1).max(100).optional().default(20),
+    })
+  )
+  .query(async ({ input }) => {
+    return repo.getBooksByGenre(
+      input.genre as GenreValue,
+      input.page,
+      input.limit
+    );
+  });
+
 export const bookQueries = {
   getById,
   search,
   getTopRated,
   getMostReviewed,
+  getByGenre,
 };
