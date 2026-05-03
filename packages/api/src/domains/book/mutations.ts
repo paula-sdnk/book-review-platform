@@ -23,7 +23,7 @@ export const create = protectedProcedure
       author: input.author.trim(),
       description: input.description.trim(),
       coverUrl: input.coverUrl?.trim() ?? null,
-      genre: input.genre?.trim() ?? null,
+      genre: input.genre ?? null,
       pageCount: input.pageCount ?? null,
       yearPublished: input.yearPublished ?? null,
     });

@@ -8,6 +8,7 @@ import { ReviewList } from "@/components/review-list";
 import { api } from "@/lib/trpc-server";
 import { RatingBadge } from "@/components/rating-badge";
 import { getGenreLabel } from "@/lib/genres";
+import { ReadingListButton } from "@/components/reading-list-button";
 
 type BookDetailsPageProps = {
   params: Promise<{
@@ -29,7 +30,11 @@ export default async function BookDetailsPage({
 
   if (!book) notFound();
 
-  const { reviews } = await caller.review.getByBookId({ bookId });
+  // reviews and reading list entry fetch in parallel
+  const [{ reviews }, readingListEntry] = await Promise.all([
+    caller.review.getByBookId({ bookId }),
+    session?.user ? caller.readingListEntry.getEntry({ bookId }) : null,
+  ]);
 
   const userAlreadyReviewed = session?.user
     ? reviews.some((r) => r.user.id === session.user.id)
@@ -72,6 +77,15 @@ export default async function BookDetailsPage({
                   size="lg"
                 />
               </div>
+
+              {session?.user ? (
+                <div className="mt-4">
+                  <ReadingListButton
+                    bookId={bookId}
+                    currentStatus={readingListEntry?.status ?? null}
+                  />
+                </div>
+              ) : null}
 
               <div className="mt-8 space-y-3 text-sm text-[#4b3527]">
                 {book.genre ? (

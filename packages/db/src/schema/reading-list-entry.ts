@@ -16,6 +16,8 @@ export const readingStatusEnum = pgEnum("reading_status", [
   "READ",
 ]);
 
+export type ReadingStatusValue = (typeof readingStatusEnum.enumValues)[number];
+
 export const readingListEntry = pgTable(
   "reading_list_entry",
   {

@@ -1,13 +1,36 @@
 import { z } from "zod";
+import { type GenreValue } from "@book-review-platform/db";
 
 const currentYear = new Date().getFullYear();
+
+const genreValues = [
+  "FICTION",
+  "FANTASY",
+  "SCIENCE_FICTION",
+  "MYSTERY_THRILLER",
+  "ROMANCE",
+  "HORROR",
+  "HISTORICAL_FICTION",
+  "LITERARY_FICTION",
+  "YOUNG_ADULT",
+  "CHILDREN",
+  "BIOGRAPHY",
+  "SELF_HELP",
+  "SCIENCE",
+  "HISTORY",
+  "PHILOSOPHY",
+  "POETRY",
+  "COMICS_GRAPHIC_NOVELS",
+  "TRUE_CRIME",
+  "BUSINESS",
+] as const satisfies readonly GenreValue[];
 
 export const createBookSchema = z.object({
   title: z.string().min(1).max(180),
   author: z.string().min(1).max(150),
   description: z.string().min(30).max(5000),
   coverUrl: z.string().optional(),
-  genre: z.string().optional(),
+  genre: z.enum(genreValues).optional().nullable(),
   pageCount: z.number().int().min(1).optional().nullable(),
   yearPublished: z
     .number()
