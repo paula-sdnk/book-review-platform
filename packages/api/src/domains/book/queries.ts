@@ -29,6 +29,10 @@ export const getMostReviewed = publicProcedure.query(async () => {
   return repo.getMostReviewedBooks();
 });
 
+export const getTrendingBooks = publicProcedure.query(async () => {
+  return repo.getTrendingBooks();
+});
+
 export const getByGenre = publicProcedure
   .input(
     z.object({
@@ -50,5 +54,6 @@ export const bookQueries = {
   search,
   getTopRated,
   getMostReviewed,
+  getTrendingBooks,
   getByGenre,
 };

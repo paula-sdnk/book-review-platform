@@ -144,3 +144,26 @@ export async function getMostReviewedBooks(limit = 10) {
     .orderBy(desc(count(review.id)))
     .limit(limit);
 }
+
+export async function getTrendingBooks(limit = 10) {
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+  return db
+    .select({
+      ...bookWithRatingFields,
+      recentReviewCount: sql<number>`count(case when ${review.createdAt} >= ${sevenDaysAgo} then 1 end)`,
+    })
+    .from(book)
+    .leftJoin(review, eq(book.id, review.bookId))
+    .groupBy(book.id)
+    .having(
+      sql`count(case when ${review.createdAt} >= ${sevenDaysAgo} then 1 end) >= 1`
+    )
+    .orderBy(
+      desc(
+        sql`count(case when ${review.createdAt} >= ${sevenDaysAgo} then 1 end)`
+      )
+    )
+    .limit(limit);
+}

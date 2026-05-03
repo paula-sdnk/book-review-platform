@@ -5,7 +5,8 @@ import { BookRow } from "@/components/book-row";
 export default async function HomePage() {
   const caller = await api();
 
-  const [topRated, mostReviewed] = await Promise.all([
+  const [trending, topRated, mostReviewed] = await Promise.all([
+    caller.book.getTrendingBooks(),
     caller.book.getTopRated(),
     caller.book.getMostReviewed(),
   ]);
@@ -75,6 +76,7 @@ export default async function HomePage() {
         </section>
 
         <div className="mt-30 space-y-12">
+          <BookRow title="Trending this week" books={trending} />
           <BookRow title="Top rated" books={topRated} />
           <BookRow title="Most reviewed" books={mostReviewed} />
         </div>
