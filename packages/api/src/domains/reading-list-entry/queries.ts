@@ -9,12 +9,25 @@ export const getEntry = protectedProcedure
     return repo.getReadingListEntry(userId, input.bookId);
   });
 
-export const getMyReadingList = protectedProcedure.query(async ({ ctx }) => {
-  const userId = ctx.session!.user.id;
-  return repo.getUserReadingList(userId);
-});
+export const getMyReadingListByStatus = protectedProcedure
+  .input(
+    z.object({
+      status: z.enum(["WANT_TO_READ", "CURRENTLY_READING", "READ"]),
+      page: z.number().min(1).optional().default(1),
+      limit: z.number().min(1).max(100).optional().default(20),
+    })
+  )
+  .query(async ({ input, ctx }) => {
+    const userId = ctx.session!.user.id;
+    return repo.getUserReadingListByStatus(
+      userId,
+      input.status,
+      input.page,
+      input.limit
+    );
+  });
 
 export const readingListQueries = {
   getEntry,
-  getMyReadingList,
+  getMyReadingListByStatus,
 };
