@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { type GenreValue } from "@book-review-platform/db";
 
 const currentYear = new Date().getFullYear();
 
@@ -23,7 +22,9 @@ const genreValues = [
   "COMICS_GRAPHIC_NOVELS",
   "TRUE_CRIME",
   "BUSINESS",
-] as const satisfies readonly GenreValue[];
+] as const;
+
+export type GenreValue = (typeof genreValues)[number];
 
 export const createBookSchema = z.object({
   title: z.string().min(1).max(180),

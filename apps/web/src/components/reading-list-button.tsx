@@ -48,7 +48,7 @@ export function ReadingListButton({ bookId, currentStatus }: Props) {
       return;
     }
 
-    router.refresh();
+    router.refresh(); // perkrauna server komponentus ir mygtukas atsinaujina su nauju statusu
   }
 
   async function handleRemove() {

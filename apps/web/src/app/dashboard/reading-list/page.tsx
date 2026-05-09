@@ -4,10 +4,9 @@ import { redirect, notFound } from "next/navigation";
 import type { Route } from "next";
 import Link from "next/link";
 import { api } from "@/lib/trpc-server";
-import { BookCard } from "@/components/book-card";
 import { BookListItem } from "@/components/book-list-item";
 
-type ReadingStatus = "WANT_TO_READ" | "CURRENTLY_READING" | "READ";
+export type ReadingStatus = "WANT_TO_READ" | "CURRENTLY_READING" | "READ";
 
 const STATUS_LABELS: Record<ReadingStatus, string> = {
   WANT_TO_READ: "Want to Read",

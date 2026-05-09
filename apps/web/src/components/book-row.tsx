@@ -31,6 +31,7 @@ export function BookRow({ title, books }: BookRowProps) {
       {title && (
         <h2 className="mb-4 text-xl font-semibold text-[#4b3527]">{title}</h2>
       )}
+      {/* start - knygos prasideda nuo pradzios o ne nuo centro */}
       <Carousel opts={{ align: "start", dragFree: true }} className="w-full">
         <CarouselContent className="-ml-4">
           {books.map((book) => (

@@ -1,4 +1,4 @@
-import { asc, count, eq, and } from "drizzle-orm";
+import { count, eq, and, desc, avg } from "drizzle-orm";
 import { db, review } from "@book-review-platform/db";
 
 export async function getReviewById(reviewId: string) {
@@ -24,7 +24,7 @@ export async function getReviewsByBookId(bookId: string, page = 1, limit = 20) {
   const [reviews, totalResult] = await Promise.all([
     db.query.review.findMany({
       where: filter,
-      orderBy: [asc(review.createdAt)],
+      orderBy: [desc(review.createdAt)],
       limit,
       offset,
       with: { user: true },
@@ -40,6 +40,41 @@ export async function getReviewsByBookId(bookId: string, page = 1, limit = 20) {
     total,
     totalPages,
     currentPage,
+  };
+}
+
+export async function getReviewsByUserId(userId: string, page = 1, limit = 10) {
+  const currentPage = Math.max(1, page);
+  const offset = (currentPage - 1) * limit;
+  const filter = eq(review.userId, userId);
+
+  const [reviews, totalResult, averageResult] = await Promise.all([
+    db.query.review.findMany({
+      where: filter,
+      orderBy: [desc(review.createdAt)],
+      limit,
+      offset,
+      with: {
+        book: true,
+      },
+    }),
+    db.select({ total: count() }).from(review).where(filter),
+    db
+      .select({ averageRating: avg(review.rating) })
+      .from(review)
+      .where(filter),
+  ]);
+
+  const total = totalResult[0]?.total ?? 0;
+  const averageRatingValue = averageResult[0]?.averageRating;
+
+  return {
+    reviews,
+    total,
+    totalPages: Math.ceil(total / limit),
+    currentPage,
+    averageRating:
+      averageRatingValue === null ? null : Number(averageRatingValue),
   };
 }
 

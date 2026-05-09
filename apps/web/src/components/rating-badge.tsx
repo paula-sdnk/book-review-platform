@@ -3,21 +3,28 @@
 type RatingBadgeProps = {
   averageRating: number | null;
   reviewCount: number;
-  size?: "sm" | "lg";
+  size?: "sm" | "md" | "lg";
+  showReviewCount?: boolean;
 };
 
 export function RatingBadge({
   averageRating,
   reviewCount,
   size = "sm",
+  showReviewCount = true,
 }: RatingBadgeProps) {
   if (reviewCount === 0 || averageRating === null) {
     return <span className="text-xs text-[#a48b78]">No ratings yet</span>;
   }
 
-  const starSize = size === "lg" ? "32px" : "16px";
+  const starSize = size === "lg" ? "32px" : size === "md" ? "24px" : "16px";
+
   const labelClasses =
-    size === "lg" ? "text-base text-[#4b3527]" : "text-xs text-[#6b5646]";
+    size === "lg"
+      ? "text-base text-[#4b3527]"
+      : size === "md"
+      ? "text-sm text-[#4b3527]"
+      : "text-xs text-[#6b5646]";
 
   return (
     <span className="inline-flex items-center gap-1.5">
@@ -48,8 +55,10 @@ export function RatingBadge({
           );
         })}
       </span>
+
       <span className={labelClasses}>
-        {averageRating} ({reviewCount})
+        {Number(averageRating).toFixed(2)}
+        {showReviewCount ? ` (${reviewCount})` : null}
       </span>
     </span>
   );

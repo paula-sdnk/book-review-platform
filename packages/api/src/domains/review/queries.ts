@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { publicProcedure } from "../../core/trpc";
+import { protectedProcedure, publicProcedure } from "../../core/trpc";
 import * as repo from "./repository";
 
 export const getById = publicProcedure
@@ -20,7 +20,20 @@ export const getByBookId = publicProcedure
     return repo.getReviewsByBookId(input.bookId, input.page, input.limit);
   });
 
+export const getByUserId = protectedProcedure
+  .input(
+    z.object({
+      limit: z.number().min(1).max(20).optional().default(3),
+      page: z.number().min(1).optional().default(1),
+    })
+  )
+  .query(async ({ ctx, input }) => {
+    const userId = ctx.session!.user.id;
+    return repo.getReviewsByUserId(userId, input.page, input.limit);
+  });
+
 export const reviewQueries = {
   getById,
   getByBookId,
+  getByUserId,
 };

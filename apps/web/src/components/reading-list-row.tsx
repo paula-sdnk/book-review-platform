@@ -1,10 +1,9 @@
 import type { Route } from "next";
 import Link from "next/link";
 import { BookRow } from "./book-row";
+import type { ReadingStatus } from "@/app/dashboard/reading-list/page";
 
 const PREVIEW_LIMIT = 6;
-
-type ReadingStatus = "WANT_TO_READ" | "CURRENTLY_READING" | "READ";
 
 type Entry = {
   book: {
