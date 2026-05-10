@@ -22,9 +22,14 @@ export type Review = {
 type ReviewCardProps = {
   review: Review;
   canUserEdit: boolean;
+  canUserDelete: boolean;
 };
 
-export function ReviewCard({ review, canUserEdit }: ReviewCardProps) {
+export function ReviewCard({
+  review,
+  canUserEdit,
+  canUserDelete,
+}: ReviewCardProps) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -41,10 +46,11 @@ export function ReviewCard({ review, canUserEdit }: ReviewCardProps) {
       return;
     }
 
+    setConfirmDelete(false);
     router.refresh();
   }
 
-  const showActions = canUserEdit && !isEditing;
+  const canShowActions = (canUserEdit || canUserDelete) && !isEditing;
 
   return (
     <div className="rounded-2xl border border-[#e7d8bf] bg-[#fffdf8] p-5">
@@ -54,30 +60,35 @@ export function ReviewCard({ review, canUserEdit }: ReviewCardProps) {
         </span>
 
         <div className="flex items-center gap-3">
-          {showActions && !confirmDelete && (
+          {canShowActions && !confirmDelete ? (
             <ReviewActionsDropdown
+              canEdit={canUserEdit}
+              canDelete={canUserDelete}
               onEdit={() => setIsEditing(true)}
               onDelete={() => setConfirmDelete(true)}
             />
-          )}
+          ) : null}
 
-          {showActions && confirmDelete && (
+          {canUserDelete && !isEditing && confirmDelete ? (
             <div className="flex items-center gap-2">
               <button
+                type="button"
                 onClick={handleDelete}
                 disabled={deleteMutation.isPending}
-                className="text-xs font-medium text-red-600 transition hover:text-red-700"
+                className="text-xs font-medium text-red-600 transition hover:text-red-700 disabled:opacity-50"
               >
                 {deleteMutation.isPending ? "Deleting..." : "Confirm"}
               </button>
+
               <button
+                type="button"
                 onClick={() => setConfirmDelete(false)}
                 className="text-xs font-medium text-[#6b5646] transition hover:text-[#4b3527]"
               >
                 Cancel
               </button>
             </div>
-          )}
+          ) : null}
 
           <span className="text-xs text-[#a48b78]">
             {new Date(review.createdAt).toLocaleDateString("en-GB")}
@@ -102,9 +113,9 @@ export function ReviewCard({ review, canUserEdit }: ReviewCardProps) {
             </span>
           </div>
 
-          {review.content && (
+          {review.content ? (
             <p className="mt-3 text-sm text-[#6b5646]">{review.content}</p>
-          )}
+          ) : null}
         </>
       )}
     </div>

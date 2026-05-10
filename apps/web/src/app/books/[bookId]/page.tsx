@@ -137,6 +137,7 @@ export default async function BookDetailsPage({
             <ReviewList
               reviews={reviews}
               currentUserId={session?.user.id ?? null}
+              currentUserRole={session?.user.role ?? null}
             />
           </div>
 

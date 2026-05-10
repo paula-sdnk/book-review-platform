@@ -58,6 +58,7 @@ export const remove = protectedProcedure
   .input(deleteReviewSchema)
   .mutation(async ({ input, ctx }) => {
     const userId = ctx.session!.user.id;
+    const userRole = ctx.session!.user.role;
 
     const existing = await repo.getReviewById(input.reviewId);
 
@@ -65,8 +66,11 @@ export const remove = protectedProcedure
       throw new Error("Review not found.");
     }
 
-    if (existing.userId !== userId) {
-      throw new Error("You can only delete your own reviews.");
+    const isOwner = existing.userId === userId;
+    const userIsAdmin = userRole === "ADMIN";
+
+    if (!isOwner && !userIsAdmin) {
+      throw new Error("You do not have permission to delete this review.");
     }
 
     await repo.deleteReview(input.reviewId);

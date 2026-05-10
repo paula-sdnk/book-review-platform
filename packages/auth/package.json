@@ -11,14 +11,20 @@
   },
   "scripts": {},
   "dependencies": {
+    "@better-auth/core": "1.6.10",
     "@book-review-platform/db": "workspace:*",
     "@book-review-platform/env": "workspace:*",
-    "better-auth": "catalog:",
+    "better-auth": "1.6.10",
+    "better-call": "1.3.5",
     "dotenv": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
     "@book-review-platform/config": "workspace:*",
     "typescript": "^5"
+  },
+  "compilerOptions": {
+    "declaration": false,
+    "declarationMap": false
   }
 }

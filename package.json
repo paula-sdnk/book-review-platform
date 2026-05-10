@@ -28,6 +28,7 @@
   "devDependencies": {
     "@book-review-platform/config": "workspace:*",
     "@types/node": "^22.13.14",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   },
   "packageManager": "pnpm@10.32.1"
