@@ -30,7 +30,6 @@ export default async function BookDetailsPage({
 
   if (!book) notFound();
 
-  // reviews and reading list entry fetch in parallel
   const [{ reviews }, readingListEntry] = await Promise.all([
     caller.review.getByBookId({ bookId }),
     session?.user ? caller.readingListEntry.getEntry({ bookId }) : null,
@@ -41,11 +40,12 @@ export default async function BookDetailsPage({
     : false;
 
   return (
-    <main className="min-h-screen bg-[#f6efe3] px-6 pt-8 pb-14">
+    <main className="min-h-screen bg-[#f6efe3] px-4 sm:px-6 pt-6 sm:pt-8 pb-14">
       <div className="mx-auto max-w-5xl">
-        <div className="rounded-3xl border border-[#e7d8bf] bg-[#fffaf2] p-8 shadow-sm">
-          <div className="flex gap-10">
-            <div className="h-[420px] w-[280px] shrink-0 overflow-hidden rounded-xl border border-[#e7d8bf] bg-[#fffdf8]">
+        <div className="rounded-2xl sm:rounded-3xl border border-[#e7d8bf] bg-[#fffaf2] p-4 sm:p-8 shadow-sm">
+          <div className="flex flex-col sm:flex-row gap-6 sm:gap-10">
+            {/* Cover */}
+            <div className="mx-auto sm:mx-0 h-[280px] w-[180px] sm:h-[420px] sm:w-[280px] shrink-0 overflow-hidden rounded-xl border border-[#e7d8bf] bg-[#fffdf8]">
               {book.coverUrl ? (
                 <img
                   src={book.coverUrl}
@@ -59,18 +59,21 @@ export default async function BookDetailsPage({
               )}
             </div>
 
-            <div className="flex-1">
-              <p className="text-sm font-medium uppercase tracking-[0.2em] text-[#b48953]">
+            {/* Info */}
+            <div className="flex-1 min-w-0">
+              <p className="text-xs sm:text-sm font-medium uppercase tracking-[0.2em] text-[#b48953]">
                 Book details
               </p>
 
-              <h1 className="mt-4 text-4xl font-bold text-[#4b3527]">
+              <h1 className="mt-3 sm:mt-4 text-2xl sm:text-4xl font-bold text-[#4b3527] break-words">
                 {book.title}
               </h1>
 
-              <p className="mt-3 text-xl text-[#6b5646]">{book.author}</p>
+              <p className="mt-2 sm:mt-3 text-lg sm:text-xl text-[#6b5646]">
+                {book.author}
+              </p>
 
-              <div className="mt-3">
+              <div className="mt-2 sm:mt-3">
                 <RatingBadge
                   averageRating={book.averageRating}
                   reviewCount={book.reviewCount}
@@ -87,7 +90,7 @@ export default async function BookDetailsPage({
                 </div>
               ) : null}
 
-              <div className="mt-8 space-y-3 text-sm text-[#4b3527]">
+              <div className="mt-6 sm:mt-8 space-y-2 sm:space-y-3 text-sm text-[#4b3527]">
                 {book.genre ? (
                   <p>
                     <span className="font-semibold">Genre:</span>{" "}
@@ -113,25 +116,31 @@ export default async function BookDetailsPage({
           </div>
         </div>
 
-        <section className="mt-8 rounded-3xl border border-[#e7d8bf] bg-[#fffaf2] p-8 shadow-sm">
-          <h2 className="text-2xl font-semibold text-[#4b3527]">Description</h2>
+        {/* Description */}
+        <section className="mt-6 sm:mt-8 rounded-2xl sm:rounded-3xl border border-[#e7d8bf] bg-[#fffaf2] p-4 sm:p-8 shadow-sm">
+          <h2 className="text-xl sm:text-2xl font-semibold text-[#4b3527]">
+            Description
+          </h2>
 
-          <div className="mt-4 text-[#6b5646]">
+          <div className="mt-3 sm:mt-4 text-sm sm:text-base text-[#6b5646]">
             <BookDescription description={book.description} />
           </div>
         </section>
 
-        <section className="mt-8 rounded-3xl border border-[#e7d8bf] bg-[#fffaf2] p-8 shadow-sm">
-          <h2 className="text-2xl font-semibold text-[#4b3527]">Reviews</h2>
+        {/* Reviews */}
+        <section className="mt-6 sm:mt-8 rounded-2xl sm:rounded-3xl border border-[#e7d8bf] bg-[#fffaf2] p-4 sm:p-8 shadow-sm">
+          <h2 className="text-xl sm:text-2xl font-semibold text-[#4b3527]">
+            Reviews
+          </h2>
 
-          <div className="mt-6">
+          <div className="mt-4 sm:mt-6">
             <ReviewList
               reviews={reviews}
               currentUserId={session?.user.id ?? null}
             />
           </div>
 
-          <div className="mt-8">
+          <div className="mt-6 sm:mt-8">
             {!session?.user ? (
               <p className="text-sm text-[#a48b78]">
                 <Link
@@ -148,7 +157,7 @@ export default async function BookDetailsPage({
               </p>
             ) : (
               <>
-                <h3 className="mb-4 text-lg font-semibold text-[#4b3527]">
+                <h3 className="mb-3 sm:mb-4 text-lg font-semibold text-[#4b3527]">
                   Write a review
                 </h3>
                 <ReviewForm mode="create" bookId={bookId} />

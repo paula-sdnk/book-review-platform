@@ -5,6 +5,8 @@ import { auth } from "@book-review-platform/auth";
 import { BookListItem } from "@/components/book-list-item";
 import { api } from "@/lib/trpc-server";
 import { GENRE_OPTIONS } from "@/lib/genres";
+import { Search } from "lucide-react";
+import { GenreDrawer } from "@/components/genre-drawer";
 
 type BooksPageProps = {
   searchParams?: Promise<{
@@ -52,133 +54,155 @@ export default async function BooksPage({ searchParams }: BooksPageProps) {
     : null;
 
   return (
-    <main className="min-h-screen bg-[#f6efe3] px-6 py-16">
-      <div className="mx-auto flex w-full max-w-5xl gap-20">
-        {/* Left — main content */}
-        <div className="flex-1">
-          <h1 className="text-3xl font-semibold text-[#4b3527]">
-            Search books
-          </h1>
-          <p className="mt-2 text-[#6b5646]">Search by title or author.</p>
-
-          {session?.user && (
-            <div className="mt-5">
-              <Link
-                href="/books/new"
-                className="inline-flex items-center rounded-2xl border border-[#dcc9ac] bg-white px-4 py-2 text-sm font-medium text-[#4b3527] transition hover:bg-[#f3e7d3]"
-              >
-                Add new book
-              </Link>
-            </div>
-          )}
-
-          <form action="/books" method="GET" className="mt-6 flex gap-3">
-            <input
-              name="query"
-              type="text"
-              defaultValue={query}
-              placeholder="Search books..."
-              className="h-10 w-full rounded-lg border border-[#dcc9ac] bg-[#fffdf8] px-4 text-[#4b3527] placeholder:text-[#a48b78] outline-none focus:border-[#c49a63]"
-            />
-            <button
-              type="submit"
-              className="h-10 cursor-pointer rounded-2xl bg-[#c49a63] px-6 font-medium text-white transition hover:bg-[#b48953]"
-            >
-              Search
-            </button>
-          </form>
-
-          {!query && !genre ? (
-            <p className="mt-6 text-[#6b5646]">
-              Enter a title or author to search, or browse by genre.
+    <main className="min-h-screen bg-[#f6efe3] px-4 sm:px-6 py-10 sm:py-16">
+      <div className="mx-auto w-full max-w-5xl">
+        {/* Header row */}
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-semibold text-[#4b3527]">
+              Search books
+            </h1>
+            <p className="mt-1 text-sm sm:text-base text-[#6b5646]">
+              Search by title or author.
             </p>
-          ) : books.length === 0 ? (
-            <p className="mt-6 text-[#6b5646]">
-              {query
-                ? `No books found for "${query}".`
-                : `No books found in ${activeGenre?.label}.`}
-            </p>
-          ) : (
-            <>
-              <p className="mt-6 text-sm text-[#6b5646]">{resultHeading}</p>
+          </div>
 
-              <div className="mt-4 flex flex-col gap-4">
-                {books.map((currentBook) => (
-                  <BookListItem
-                    key={currentBook.id}
-                    id={currentBook.id}
-                    title={currentBook.title}
-                    author={currentBook.author}
-                    coverUrl={currentBook.coverUrl}
-                    averageRating={currentBook.averageRating}
-                    reviewCount={currentBook.reviewCount}
-                  />
-                ))}
-              </div>
-
-              {totalPages > 1 && (
-                <div className="mt-8 flex items-center justify-between">
-                  {currentPage > 1 ? (
-                    <Link
-                      href={
-                        query
-                          ? buildSearchHref(query, currentPage - 1)
-                          : buildGenreHref(genre, currentPage - 1)
-                      }
-                      className="rounded-lg border border-[#dcc9ac] bg-white px-4 py-2 text-[#4b3527]"
-                    >
-                      Previous
-                    </Link>
-                  ) : (
-                    <div />
-                  )}
-
-                  <p className="text-sm text-[#6b5646]">
-                    Page {currentPage} of {totalPages}
-                  </p>
-
-                  {currentPage < totalPages ? (
-                    <Link
-                      href={
-                        query
-                          ? buildSearchHref(query, currentPage + 1)
-                          : buildGenreHref(genre, currentPage + 1)
-                      }
-                      className="rounded-lg border border-[#dcc9ac] bg-white px-4 py-2 text-[#4b3527]"
-                    >
-                      Next
-                    </Link>
-                  ) : (
-                    <div />
-                  )}
-                </div>
-              )}
-            </>
-          )}
+          {/* Mobile: genre filter burger | Desktop: hidden (sidebar handles it) */}
+          <div className="mt-1 sm:hidden">
+            <GenreDrawer genres={GENRE_OPTIONS} activeGenre={genre} />
+          </div>
         </div>
 
-        {/* Right — genre sidebar */}
-        <aside className="w-48 shrink-0">
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-[#b48953]">
-            Browse by genre
-          </p>
+        {/* Two-column layout starts earlier */}
+        <div className="mt-4 sm:mt-6 flex gap-12">
+          {/* Main content */}
+          <div className="min-w-0 flex-1">
+            {session?.user && (
+              <div>
+                <Link
+                  href="/books/new"
+                  className="inline-flex items-center rounded-2xl border border-[#dcc9ac] bg-white px-3 py-1.5 text-xs sm:text-sm font-medium text-[#4b3527] transition hover:bg-[#f3e7d3]"
+                >
+                  Add new book
+                </Link>
+              </div>
+            )}
 
-          <div className="mt-4 flex flex-col gap-1">
-            {GENRE_OPTIONS.map((g) => (
-              <Link
-                key={g.value}
-                href={`/books?genre=${g.value}` as Route}
-                className={`rounded-lg px-3 py-1 text-sm transition ${
-                  genre === g.value
-                    ? "bg-[#b48953] font-medium text-white"
-                    : "text-[#4b3527] hover:bg-[#f3e7d3]"
-                }`}
+            {/* Search bar — now inside main column */}
+            <form action="/books" method="GET" className="mt-4 flex gap-2">
+              <input
+                name="query"
+                type="text"
+                defaultValue={query}
+                placeholder="Search books..."
+                className="h-9 sm:h-10 min-w-0 flex-1 rounded-lg border border-[#dcc9ac] bg-[#fffdf8] px-3 sm:px-4 text-sm text-[#4b3527] placeholder:text-[#a48b78] outline-none focus:border-[#c49a63]"
+              />
+              <button
+                type="submit"
+                className="h-9 sm:h-10 shrink-0 cursor-pointer rounded-xl bg-[#c49a63] px-3 sm:px-5 text-white transition hover:bg-[#b48953] flex items-center justify-center"
+                aria-label="Search"
               >
-                {g.label}
-              </Link>
-            ))}
+                <Search className="h-4 w-4 sm:hidden" />
+                <span className="hidden sm:inline text-sm font-medium">
+                  Search
+                </span>
+              </button>
+            </form>
+
+            {/* Results */}
+            <div className="mt-6">
+              {!query && !genre ? (
+                <p className="text-sm text-[#6b5646]">
+                  Enter a title or author to search, or browse by genre.
+                </p>
+              ) : books.length === 0 ? (
+                <p className="text-sm text-[#6b5646]">
+                  {query
+                    ? `No books found for "${query}".`
+                    : `No books found in ${activeGenre?.label}.`}
+                </p>
+              ) : (
+                <>
+                  <p className="text-sm text-[#6b5646]">{resultHeading}</p>
+
+                  <div className="mt-4 flex flex-col gap-4">
+                    {books.map((currentBook) => (
+                      <BookListItem
+                        key={currentBook.id}
+                        id={currentBook.id}
+                        title={currentBook.title}
+                        author={currentBook.author}
+                        coverUrl={currentBook.coverUrl}
+                        averageRating={currentBook.averageRating}
+                        reviewCount={currentBook.reviewCount}
+                      />
+                    ))}
+                  </div>
+
+                  {totalPages > 1 && (
+                    <div className="mt-8 flex items-center justify-between gap-2">
+                      {currentPage > 1 ? (
+                        <Link
+                          href={
+                            query
+                              ? buildSearchHref(query, currentPage - 1)
+                              : buildGenreHref(genre, currentPage - 1)
+                          }
+                          className="rounded-lg border border-[#dcc9ac] bg-white px-3 py-1.5 text-sm text-[#4b3527] whitespace-nowrap"
+                        >
+                          ← Prev
+                        </Link>
+                      ) : (
+                        <div />
+                      )}
+
+                      <p className="text-sm text-[#6b5646] text-center">
+                        {currentPage} / {totalPages}
+                      </p>
+
+                      {currentPage < totalPages ? (
+                        <Link
+                          href={
+                            query
+                              ? buildSearchHref(query, currentPage + 1)
+                              : buildGenreHref(genre, currentPage + 1)
+                          }
+                          className="rounded-lg border border-[#dcc9ac] bg-white px-3 py-1.5 text-sm text-[#4b3527] whitespace-nowrap"
+                        >
+                          Next →
+                        </Link>
+                      ) : (
+                        <div />
+                      )}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
           </div>
-        </aside>
+
+          {/* Desktop genre sidebar */}
+          <aside className="hidden sm:block w-44 shrink-0">
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#b48953]">
+              Browse by genre
+            </p>
+            <div className="mt-4 flex flex-col gap-1">
+              {GENRE_OPTIONS.map((g) => (
+                <Link
+                  key={g.value}
+                  href={`/books?genre=${g.value}` as Route}
+                  className={`rounded-lg px-3 py-1 text-sm transition ${
+                    genre === g.value
+                      ? "bg-[#b48953] font-medium text-white"
+                      : "text-[#4b3527] hover:bg-[#f3e7d3]"
+                  }`}
+                >
+                  {g.label}
+                </Link>
+              ))}
+            </div>
+          </aside>
+        </div>
       </div>
     </main>
   );

@@ -32,8 +32,8 @@ export default async function DashboardReviewsPage({ searchParams }: Props) {
   });
 
   return (
-    <main className="min-h-screen bg-[#f6efe3] px-10 py-14">
-      <div className="mx-auto max-w-5xl">
+    <main className="min-h-screen overflow-x-hidden bg-[#f6efe3] px-4 sm:px-6 lg:px-10 py-8 sm:py-14">
+      <div className="mx-auto max-w-5xl min-w-0">
         <Link
           href="/dashboard"
           className="text-sm text-[#b48953] underline underline-offset-4 transition hover:text-[#4b3527]"
@@ -41,24 +41,25 @@ export default async function DashboardReviewsPage({ searchParams }: Props) {
           ← Back to dashboard
         </Link>
 
-        <p className="mt-6 text-sm font-medium uppercase tracking-[0.2em] text-[#b48953]">
+        <p className="mt-6 text-xs sm:text-sm font-medium uppercase tracking-[0.2em] text-[#b48953]">
           My reviews
         </p>
 
-        <h1 className="mt-2 text-4xl font-bold text-[#4b3527]">
+        <h1 className="mt-2 text-2xl sm:text-4xl font-bold text-[#4b3527]">
           Reviews
-          <span className="ml-3 text-xl font-normal text-[#a48b78]">
+          <span className="ml-2 sm:ml-3 text-lg sm:text-xl font-normal text-[#a48b78]">
             ({total})
           </span>
         </h1>
 
         {reviews.length === 0 ? (
-          <p className="mt-10 text-sm text-[#a48b78]">
+          <p className="mt-8 sm:mt-10 text-sm text-[#a48b78]">
             You have not written any reviews yet.
           </p>
         ) : (
-          <div className="mt-10">
-            <div className="grid grid-cols-[64px_2fr_1fr_2fr_1fr] gap-4 px-4 pb-2">
+          <div className="mt-8 sm:mt-10 min-w-0">
+            {/* Desktop table header */}
+            <div className="hidden sm:grid grid-cols-[64px_2fr_1fr_2fr_1fr] gap-4 px-4 pb-2">
               <div />
               <p className="text-xs font-semibold uppercase tracking-wide text-[#9a846d]">
                 Title
@@ -81,7 +82,7 @@ export default async function DashboardReviewsPage({ searchParams }: Props) {
             </div>
 
             {totalPages > 1 && (
-              <div className="mt-8 flex items-center justify-center gap-4">
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
                 {currentPage > 1 && (
                   <Link
                     href={`/dashboard/reviews?page=${currentPage - 1}` as Route}
@@ -91,7 +92,7 @@ export default async function DashboardReviewsPage({ searchParams }: Props) {
                   </Link>
                 )}
 
-                <span className="text-sm text-[#a48b78]">
+                <span className="text-center text-sm text-[#a48b78]">
                   Page {currentPage} of {totalPages}
                 </span>
 

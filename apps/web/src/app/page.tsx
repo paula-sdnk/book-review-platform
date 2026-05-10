@@ -12,38 +12,38 @@ export default async function HomePage() {
   ]);
 
   return (
-    <main className="min-h-[calc(100vh-80px)] bg-[#f6efe3]">
-      <div className="mx-auto max-w-6xl px-6 py-20">
-        <section className="flex max-w-3xl flex-col items-center text-center mx-auto">
-          <p className="text-sm font-medium uppercase tracking-[0.3em] text-[#c89b5a]">
+    <main className="min-h-[calc(100vh-80px)] bg-[#f6efe3] overflow-x-hidden">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 py-12 sm:py-20">
+        <section className="flex w-full max-w-3xl flex-col items-center text-center mx-auto overflow-hidden">
+          <p className="text-xs sm:text-sm font-medium uppercase tracking-[0.15em] sm:tracking-[0.3em] text-[#c89b5a]">
             Book review platform
           </p>
 
-          <h1 className="mt-6 text-5xl font-bold tracking-tight text-[#5c4033] sm:text-6xl">
+          <h1 className="mt-4 sm:mt-6 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#5c4033]">
             BookLeaf
           </h1>
 
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-[#7a6656]">
+          <p className="mt-4 sm:mt-6 max-w-2xl text-base sm:text-lg leading-8 text-[#7a6656] px-2">
             Discover books, explore details and begin building your own reading
             space with BookLeaf.
           </p>
 
-          <div className="mt-10">
+          <div className="mt-8 sm:mt-10 flex justify-center">
             <Link
               href="/books"
-              className="rounded-full bg-[#c89b5a] px-8 py-4 text-base font-medium text-white transition hover:bg-[#b88544]"
+              className="rounded-full bg-[#c89b5a] px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-medium text-white transition hover:bg-[#b88544]"
             >
               Explore books
             </Link>
           </div>
         </section>
 
-        <section className="mt-20">
-          <p className="text-center text-sm font-medium uppercase tracking-[0.2em] text-[#b48953]">
+        <section className="mt-14 sm:mt-20">
+          <p className="text-center text-xs sm:text-sm font-medium uppercase tracking-[0.2em] text-[#b48953]">
             Words about reading
           </p>
 
-          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
+          <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
             {[
               {
                 quote:
@@ -62,7 +62,7 @@ export default async function HomePage() {
             ].map((item) => (
               <div
                 key={item.author}
-                className="flex flex-col justify-between rounded-2xl border border-[#e7d8bf] bg-[#fffaf2] p-6 shadow-sm"
+                className="flex flex-col justify-between rounded-2xl border border-[#e7d8bf] bg-[#fffaf2] p-5 sm:p-6 shadow-sm"
               >
                 <blockquote className="text-sm italic leading-relaxed text-[#7a6656]">
                   "{item.quote}"
@@ -75,7 +75,7 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <div className="mt-30 space-y-12">
+        <div className="mt-16 sm:mt-24 space-y-8 sm:space-y-12">
           <BookRow title="Trending this week" books={trending} />
           <BookRow title="Top rated" books={topRated} />
           <BookRow title="Most reviewed" books={mostReviewed} />

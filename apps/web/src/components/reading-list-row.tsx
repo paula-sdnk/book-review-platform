@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BookRow } from "./book-row";
 import type { ReadingStatus } from "@/app/dashboard/reading-list/page";
 
-const PREVIEW_LIMIT = 6;
+const PREVIEW_LIMIT = 5;
 
 type Entry = {
   book: {

@@ -27,15 +27,20 @@ export function BookRow({ title, books }: BookRowProps) {
   if (books.length === 0) return null;
 
   return (
-    <div>
+    <div className="overflow-hidden min-w-0">
       {title && (
         <h2 className="mb-4 text-xl font-semibold text-[#4b3527]">{title}</h2>
       )}
-      {/* start - knygos prasideda nuo pradzios o ne nuo centro */}
-      <Carousel opts={{ align: "start", dragFree: true }} className="w-full">
-        <CarouselContent className="-ml-4">
+      <Carousel
+        opts={{ align: "start", dragFree: true }}
+        className="w-full min-w-0"
+      >
+        <CarouselContent className="-ml-3 sm:-ml-4">
           {books.map((book) => (
-            <CarouselItem key={book.id} className="pl-4 basis-auto">
+            <CarouselItem
+              key={book.id}
+              className="pl-3 sm:pl-4 shrink-0 basis-[140px] sm:basis-[180px]"
+            >
               <BookCard
                 id={book.id}
                 title={book.title}
@@ -47,8 +52,12 @@ export function BookRow({ title, books }: BookRowProps) {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+
+        {/* Hide arrows on mobile — swipe works there */}
+        <div className="hidden sm:block">
+          <CarouselPrevious />
+          <CarouselNext />
+        </div>
       </Carousel>
     </div>
   );
