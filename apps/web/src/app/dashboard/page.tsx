@@ -110,6 +110,9 @@ export default async function DashboardPage() {
           <div className="flex items-center justify-between">
             <h2 className="text-xl sm:text-2xl font-bold text-[#4b3527]">
               My Reviews
+              <span className="ml-2 sm:ml-3 text-lg sm:text-xl font-normal text-[#a48b78]">
+                ({reviewsDashboard.total})
+              </span>
             </h2>
 
             {reviewsDashboard.total > REVIEW_PREVIEW_LIMIT && (
@@ -122,7 +125,7 @@ export default async function DashboardPage() {
             )}
           </div>
 
-          {reviewsDashboard.reviews.length === 0 ? (
+          {reviewsDashboard.total === 0 ? (
             <div className="mt-4 rounded-2xl border border-[#e6d5bd] bg-white p-4 sm:p-6">
               <p className="text-sm sm:text-base text-[#6b4f3a]">
                 You have not written any reviews yet.
@@ -130,7 +133,6 @@ export default async function DashboardPage() {
             </div>
           ) : (
             <div className="mt-4 overflow-hidden">
-              {/* Table header — desktop only */}
               <div className="hidden sm:grid grid-cols-[64px_2fr_1fr_2fr_1fr] gap-4 px-4 pb-2">
                 <div />
                 <p className="text-xs font-semibold uppercase tracking-wide text-[#9a846d]">

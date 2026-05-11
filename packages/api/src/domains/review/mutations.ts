@@ -67,9 +67,9 @@ export const remove = protectedProcedure
     }
 
     const isOwner = existing.userId === userId;
-    const userIsAdmin = userRole === "ADMIN";
+    const IsAdmin = userRole === "ADMIN";
 
-    if (!isOwner && !userIsAdmin) {
+    if (!isOwner && !IsAdmin) {
       throw new Error("You do not have permission to delete this review.");
     }
 

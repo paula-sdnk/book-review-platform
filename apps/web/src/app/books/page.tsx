@@ -56,7 +56,6 @@ export default async function BooksPage({ searchParams }: BooksPageProps) {
   return (
     <main className="min-h-screen bg-[#f6efe3] px-4 sm:px-6 py-10 sm:py-16">
       <div className="mx-auto w-full max-w-5xl">
-        {/* Header row */}
         <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-semibold text-[#4b3527]">
@@ -73,7 +72,6 @@ export default async function BooksPage({ searchParams }: BooksPageProps) {
           </div>
         </div>
 
-        {/* Two-column layout starts earlier */}
         <div className="mt-4 sm:mt-6 flex gap-12">
           {/* Main content */}
           <div className="min-w-0 flex-1">

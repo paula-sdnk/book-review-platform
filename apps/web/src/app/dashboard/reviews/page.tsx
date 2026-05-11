@@ -58,7 +58,6 @@ export default async function DashboardReviewsPage({ searchParams }: Props) {
           </p>
         ) : (
           <div className="mt-8 sm:mt-10 min-w-0">
-            {/* Desktop table header */}
             <div className="hidden sm:grid grid-cols-[64px_2fr_1fr_2fr_1fr] gap-4 px-4 pb-2">
               <div />
               <p className="text-xs font-semibold uppercase tracking-wide text-[#9a846d]">

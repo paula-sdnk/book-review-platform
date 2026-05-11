@@ -57,7 +57,6 @@ export function DashboardReviewCard({ review }: DashboardReviewCardProps) {
             />
           </div>
 
-          {/* Review + date: desktop grid cells */}
           <div className="hidden sm:block">
             {review.content ? (
               <p className="line-clamp-2 text-sm text-[#4b3527]">
@@ -68,6 +67,7 @@ export function DashboardReviewCard({ review }: DashboardReviewCardProps) {
             )}
           </div>
 
+          {/* sm = 640px ir daugiau */}
           <div className="hidden sm:block">
             <p className="text-xs text-[#8a7763]">
               {dateFormatter.format(review.createdAt)}
